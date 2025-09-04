@@ -10,7 +10,10 @@
 	"backend": "hono",
 	"runtime": "workers",
 	"frontend": ["native-nativewind"],
-	"addons": ["turborepo", "ultracite"],
+	"addons": [
+    "turborepo",
+    "ultracite"
+  ],
 	"examples": ["todo"],
 	"auth": "better-auth",
 	"packageManager": "bun",
