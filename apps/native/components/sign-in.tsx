@@ -15,7 +15,7 @@ export function SignIn() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
-	const handleLogin = async () => {
+	const handleEmailLogin = async () => {
 		setIsLoading(true);
 		setError(null);
 
@@ -25,13 +25,36 @@ export function SignIn() {
 				password,
 			},
 			{
-				onError: (error) => {
-					setError(error.error?.message || "Failed to sign in");
+				onError: (err) => {
+					setError(err.error?.message || "Failed to sign in");
 					setIsLoading(false);
 				},
 				onSuccess: () => {
 					setEmail("");
 					setPassword("");
+					queryClient.refetchQueries();
+				},
+				onFinished: () => {
+					setIsLoading(false);
+				},
+			},
+		);
+	};
+
+	const handleGitHubLogin = async () => {
+		setIsLoading(true);
+		setError(null);
+		await authClient.signIn.social(
+			{
+				provider: "github",
+				callbackURL: "/",
+			},
+			{
+				onError: (err) => {
+					setError(err.error?.message || "Failed to sign in with GitHub");
+					setIsLoading(false);
+				},
+				onSuccess: () => {
 					queryClient.refetchQueries();
 				},
 				onFinished: () => {
@@ -53,6 +76,20 @@ export function SignIn() {
 				</View>
 			)}
 
+			{/* Social login */}
+			<TouchableOpacity
+				onPress={handleGitHubLogin}
+				disabled={isLoading}
+				className="bg-black mb-4 p-4 rounded-md flex-row justify-center items-center"
+			>
+				{isLoading ? (
+					<ActivityIndicator size="small" color="#fff" />
+				) : (
+					<Text className="text-white font-medium">Continue with GitHub</Text>
+				)}
+			</TouchableOpacity>
+
+			{/* Email + password fallback */}
 			<TextInput
 				className="mb-3 p-4 rounded-md bg-input text-foreground border border-input"
 				placeholder="Email"
@@ -73,7 +110,7 @@ export function SignIn() {
 			/>
 
 			<TouchableOpacity
-				onPress={handleLogin}
+				onPress={handleEmailLogin}
 				disabled={isLoading}
 				className="bg-primary p-4 rounded-md flex-row justify-center items-center"
 			>

@@ -1,39 +1,42 @@
-import { env } from "cloudflare:workers";
-import { trpcServer } from "@hono/trpc-server";
-import { createContext } from "./lib/context";
-import { appRouter } from "./routers/index";
-import { auth } from "./lib/auth";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
+import { trpcServer } from "@hono/trpc-server";
+import { appRouter } from "./routers/index";
+import { createContext } from "./lib/context";
+import { getAuth, type AuthEnv } from "./lib/auth";
 
-const app = new Hono();
+// Type the Hono app so c.env is known
+const app = new Hono<{
+	Bindings: AuthEnv;
+}>();
 
 app.use(logger());
+
+// Env-aware CORS (no async wrapper needed)
 app.use(
 	"/*",
 	cors({
-		origin: env.CORS_ORIGIN || "",
+		origin: (_origin, c) => c.env.CORS_ORIGIN || "",
 		allowMethods: ["GET", "POST", "OPTIONS"],
 		allowHeaders: ["Content-Type", "Authorization"],
 		credentials: true,
 	}),
 );
 
-app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
+// BetterAuth routes
+app.on(["POST", "GET"], "/api/auth/**", (c) => getAuth(c.env).handler(c.req.raw));
 
+// tRPC
 app.use(
 	"/trpc/*",
 	trpcServer({
 		router: appRouter,
-		createContext: (_opts, context) => {
-			return createContext({ context });
-		},
+		createContext: (_opts, context) => createContext({ context }),
 	}),
 );
 
-app.get("/", (c) => {
-	return c.text("OK");
-});
+// Health
+app.get("/", (c) => c.text("OK"));
 
 export default app;

@@ -11,6 +11,7 @@ export default function Home() {
 	const healthCheck = useQuery(trpc.healthCheck.queryOptions());
 	const privateData = useQuery(trpc.privateData.queryOptions());
 	const { data: session } = authClient.useSession();
+	const gists = useQuery({ ...trpc.listGists.queryOptions(), enabled: Boolean(session?.user) });
 
 	return (
 		<Container>
@@ -71,6 +72,39 @@ export default function Home() {
 							</View>
 						)}
 					</View>
+
+					{session?.user && (
+						<View className="mb-6 rounded-lg border border-border p-4">
+							<Text className="mb-3 font-medium text-foreground">
+								Your Gists
+							</Text>
+							{gists.isLoading ? (
+								<Text className="text-muted-foreground">Loading gists…</Text>
+							) : gists.error ? (
+								<Text className="text-destructive">
+									Failed to load gists
+								</Text>
+							) : (
+								<View className="gap-2">
+									{(gists.data ?? []).length === 0 ? (
+										<Text className="text-muted-foreground">No gists found</Text>
+									) : (
+										(gists.data ?? []).map((g) => (
+											<View key={g.id} className="border border-border rounded-md p-3">
+												<Text className="text-foreground font-medium">
+													{g.description || "(no description)"}
+												</Text>
+												<Text className="text-muted-foreground text-xs">
+													{g.files} file(s) • {g.public ? "public" : "private"}
+												</Text>
+											</View>
+										))
+									)}
+								</View>
+							)}
+						</View>
+					)}
+
 					{!session?.user && (
 						<>
 							<SignIn />
