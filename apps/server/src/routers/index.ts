@@ -83,9 +83,63 @@ export const appRouter = router({
 		});
 
 		return items;
-	}),
-
-	todo: todoRouter,
+		}),
+	
+		// getGist: fetch a single gist by ID
+		getGist: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
+			const userId = ctx.session.user.id;
+	
+			const rows = await ctx.db
+				.select({ accessToken: account.accessToken })
+				.from(account)
+				.where(and(eq(account.userId, userId), eq(account.providerId, "github")))
+				.limit(1);
+	
+			const accessToken = rows[0]?.accessToken;
+			if (!accessToken) {
+				throw new TRPCError({
+					code: "UNAUTHORIZED",
+					message: "GitHub account not linked",
+				});
+			}
+	
+			const res = await fetch(`https://api.github.com/gists/${input.id}`, {
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+					Accept: "application/vnd.github+json",
+					"User-Agent": "gister-app",
+				},
+			});
+	
+			if (!res.ok) {
+				throw new TRPCError({
+					code: "BAD_REQUEST",
+					message: `GitHub API error (${res.status})`,
+				});
+			}
+	
+			const json = await res.json();
+	
+			const FullGist = z.object({
+				id: z.string(),
+				description: z.string().nullable().optional(),
+				files: z.record(z.string(), z.object({
+					filename: z.string(),
+					type: z.string(),
+					language: z.string().nullable(),
+					raw_url: z.string().url(),
+					size: z.number(),
+					content: z.string(),
+				})),
+				public: z.boolean(),
+				html_url: z.string().url(),
+				updated_at: z.string(),
+			});
+	
+			return FullGist.parse(json);
+		}),
+	
+		todo: todoRouter,
 });
 
 export type AppRouter = typeof appRouter;

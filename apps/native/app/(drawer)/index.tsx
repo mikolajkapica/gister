@@ -1,6 +1,7 @@
 import { authClient } from "@/lib/auth-client";
 import { useQuery } from "@tanstack/react-query";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { useRouter } from "expo-router";
 
 import { Container } from "@/components/container";
 import { SignIn } from "@/components/sign-in";
@@ -8,6 +9,7 @@ import { SignUp } from "@/components/sign-up";
 import { queryClient, trpc } from "@/utils/trpc";
 
 export default function Home() {
+	const router = useRouter();
 	const healthCheck = useQuery(trpc.healthCheck.queryOptions());
 	const privateData = useQuery(trpc.privateData.queryOptions());
 	const { data: session } = authClient.useSession();
@@ -90,14 +92,18 @@ export default function Home() {
 										<Text className="text-muted-foreground">No gists found</Text>
 									) : (
 										(gists.data ?? []).map((g) => (
-											<View key={g.id} className="border border-border rounded-md p-3">
+											<TouchableOpacity
+												key={g.id}
+												className="border border-border rounded-md p-3"
+												onPress={() => router.push(`/gist/${g.id}`)}
+											>
 												<Text className="text-foreground font-medium">
 													{g.description || "(no description)"}
 												</Text>
 												<Text className="text-muted-foreground text-xs">
 													{g.files} file(s) • {g.public ? "public" : "private"}
 												</Text>
-											</View>
+											</TouchableOpacity>
 										))
 									)}
 								</View>
