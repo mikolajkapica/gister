@@ -10,7 +10,7 @@ export function HomeHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <View className="mx-auto w-[80%] flex-row items-center justify-between px-4 py-2">
+    <View className="width-full flex-row items-center justify-between px-4 py-2">
       {/* Left: App name */}
       <Text
         accessibilityRole="header"

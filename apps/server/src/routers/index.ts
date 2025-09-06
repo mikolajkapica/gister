@@ -148,13 +148,13 @@ export const appRouter = router({
 			})).optional(),
 		})).mutation(async ({ ctx, input }) => {
 			const userId = ctx.session.user.id;
-	
+
 			const rows = await ctx.db
 				.select({ accessToken: account.accessToken })
 				.from(account)
 				.where(and(eq(account.userId, userId), eq(account.providerId, "github")))
 				.limit(1);
-	
+
 			const accessToken = rows[0]?.accessToken;
 			if (!accessToken) {
 				throw new TRPCError({
@@ -162,7 +162,7 @@ export const appRouter = router({
 					message: "GitHub account not linked",
 				});
 			}
-	
+
 			const body: Record<string, unknown> = {};
 			if (input.description !== undefined) {
 				body.description = input.description;
@@ -173,7 +173,7 @@ export const appRouter = router({
 					(body.files as Record<string, unknown>)[filename] = { content: file.content };
 				}
 			}
-	
+
 			const res = await fetch(`https://api.github.com/gists/${input.id}`, {
 				method: "PATCH",
 				headers: {
@@ -184,16 +184,53 @@ export const appRouter = router({
 				},
 				body: JSON.stringify(body),
 			});
-	
+
 			if (!res.ok) {
 				throw new TRPCError({
 					code: "BAD_REQUEST",
 					message: `GitHub API error (${res.status})`,
 				});
 			}
-	
+
 			const json = await res.json();
 			return FullGist.parse(json);
+		}),
+
+		// deleteGist: delete a gist
+		deleteGist: protectedProcedure.input(z.object({ id: z.string() })).mutation(async ({ ctx, input }) => {
+			const userId = ctx.session.user.id;
+
+			const rows = await ctx.db
+				.select({ accessToken: account.accessToken })
+				.from(account)
+				.where(and(eq(account.userId, userId), eq(account.providerId, "github")))
+				.limit(1);
+
+			const accessToken = rows[0]?.accessToken;
+			if (!accessToken) {
+				throw new TRPCError({
+					code: "UNAUTHORIZED",
+					message: "GitHub account not linked",
+				});
+			}
+
+			const res = await fetch(`https://api.github.com/gists/${input.id}`, {
+				method: "DELETE",
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+					Accept: "application/vnd.github+json",
+					"User-Agent": "gister-app",
+				},
+			});
+
+			if (!res.ok) {
+				throw new TRPCError({
+					code: "BAD_REQUEST",
+					message: `GitHub API error (${res.status})`,
+				});
+			}
+
+			return { success: true };
 		}),
 	
 		todo: todoRouter,
