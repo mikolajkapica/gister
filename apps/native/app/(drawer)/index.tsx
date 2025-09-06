@@ -9,7 +9,6 @@ import { SignIn } from "@/components/sign-in";
 import { SignUp } from "@/components/sign-up";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SearchBar } from "@/components/ui/search-bar";
 import { authClient } from "@/lib/auth-client";
 import { trpc } from "@/utils/trpc";
@@ -66,150 +65,103 @@ export default function Home() {
                 />
               </View>
 
-              <Card
-                className={["mb-6", "rounded-xl", "shadow-sm"].join(" ").trim()}
-              >
-                <CardHeader>
-                  <View className="flex-row items-center justify-between">
-                    <View className="flex-row items-center gap-2">
-                      <Ionicons
-                        color="#4C6EF5"
-                        name="folder-outline"
-                        size={18}
-                      />
-                      <CardTitle>Your Gists</CardTitle>
-                    </View>
-                    <View className="flex-row gap-2">
-                      <Button
-                        accessibilityLabel="Create new gist"
-                        onPress={() => router.push("/gist/new")}
-                        size="sm"
-                      >
-                        <Ionicons name="add" size={16} color="#ffffff" />
-                      </Button>
-                      <Button
-                        accessibilityLabel="Refresh gists"
-                        onPress={() => gists.refetch()}
-                        variant="outline"
-                        size="sm"
-                      >
-                        Refresh
-                      </Button>
-                    </View>
+              <View className="mb-6">
+                <View className="flex-row items-center justify-between mb-4">
+                  <View className="flex-row items-center gap-2">
+                    <Ionicons
+                      color="#4C6EF5"
+                      name="folder-outline"
+                      size={18}
+                    />
+                    <Text className="text-lg font-semibold text-foreground">
+                      Your Gists
+                    </Text>
                   </View>
-                </CardHeader>
-                <CardContent>
-                  {(() => {
-                    if (gists.isLoading) {
-                      return (
-                        <View className="gap-3">
-                          {[0, 1, 2].map((i) => (
-                            <View
-                              className={[
-                                "h-12",
-                                "rounded-xl",
-                                "bg-muted",
-                                "animate-pulse",
-                              ]
-                                .join(" ")
-                                .trim()}
-                              key={i}
-                            />
-                          ))}
-                        </View>
-                      );
-                    }
-                    if (gists.error) {
-                      return (
-                        <Text className="text-destructive">
-                          Failed to load gists
-                        </Text>
-                      );
-                    }
-                    if (filtered.length === 0) {
-                      return (
-                        <View className="items-center justify-center py-8">
-                          <Ionicons
-                            color="#94a3b8"
-                            name="document-text-outline"
-                            size={28}
-                          />
-                          <Text className="mt-2 text-muted-foreground">
-                            No gists found
-                          </Text>
-                        </View>
-                      );
-                    }
+                  <View className="flex-row gap-2">
+                    <Button
+                      accessibilityLabel="Create new gist"
+                      onPress={() => router.push("/gist/new")}
+                      size="sm"
+                    >
+                      <Ionicons name="add" size={16} color="#ffffff" />
+                    </Button>
+                    <Button
+                      accessibilityLabel="Refresh gists"
+                      onPress={() => gists.refetch()}
+                      variant="outline"
+                      size="sm"
+                    >
+                      Refresh
+                    </Button>
+                  </View>
+                </View>
+
+                {(() => {
+                  if (gists.isLoading) {
                     return (
-                      <View className="gap-3">
-                        {filtered.map((g) => {
-                          const isPublic = Boolean(g.public);
-                          return (
+                      <View className="space-y-2">
+                        {[0, 1, 2].map((i) => (
+                          <View
+                            className="h-16 bg-muted animate-pulse rounded-lg"
+                            key={i}
+                          />
+                        ))}
+                      </View>
+                    );
+                  }
+                  if (gists.error) {
+                    return (
+                      <Text className="text-destructive py-4">
+                        Failed to load gists
+                      </Text>
+                    );
+                  }
+                  if (filtered.length === 0) {
+                    return (
+                      <View className="items-center justify-center py-12">
+                        <Ionicons
+                          color="#94a3b8"
+                          name="document-text-outline"
+                          size={32}
+                        />
+                        <Text className="mt-3 text-muted-foreground text-center">
+                          No gists found
+                        </Text>
+                      </View>
+                    );
+                  }
+                  return (
+                    <View className="bg-card rounded-xl border border-border overflow-hidden">
+                      {filtered.map((g, index) => {
+                        const isPublic = Boolean(g.public);
+                        const isLast = index === filtered.length - 1;
+
+                        return (
+                          <View key={g.id}>
                             <TouchableOpacity
-                              className={[
-                                "flex-row",
-                                "items-center",
-                                "justify-between",
-                                "rounded-xl",
-                                "border",
-                                "border-border/60",
-                                "bg-card",
-                                "p-3",
-                                "shadow-sm",
-                                "transition-none",
-                                "hover:bg-muted/50",
-                              ]
-                                .join(" ")
-                                .trim()}
-                              key={g.id}
+                              className="flex-row items-center justify-between p-4 active:bg-muted/50"
                               onPress={() => router.push(`/gist/${g.id}`)}
                             >
-                              <View className="flex-row items-center">
-                                <View
-                                  className={[
-                                    "mr-3",
-                                    "h-8",
-                                    "w-8",
-                                    "items-center",
-                                    "justify-center",
-                                    "rounded-lg",
-                                    "bg-primary/10",
-                                  ]
-                                    .join(" ")
-                                    .trim()}
-                                >
+                              <View className="flex-row items-center flex-1">
+                                <View className="mr-4 h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
                                   <Ionicons
                                     color="#4C6EF5"
                                     name="document-text-outline"
-                                    size={18}
+                                    size={20}
                                   />
                                 </View>
-                                <View className="max-w-[78%]">
+                                <View className="flex-1">
                                   <Text
-                                    className={[
-                                      "font-medium",
-                                      "text-foreground",
-                                    ]
-                                      .join(" ")
-                                      .trim()}
+                                    className="font-medium text-foreground text-base"
                                     numberOfLines={1}
                                   >
                                     {g.description || "(no description)"}
                                   </Text>
                                   <View className="mt-1 flex-row items-center gap-2">
-                                    <Text
-                                      className={[
-                                        "text-xs",
-                                        "text-muted-foreground",
-                                      ]
-                                        .join(" ")
-                                        .trim()}
-                                    >
-                                      {g.files} file(s)
+                                    <Text className="text-xs text-muted-foreground">
+                                      {g.files} file{g.files !== 1 ? "s" : ""}
                                     </Text>
-                                    <Badge
-                                      tone={isPublic ? "success" : "neutral"}
-                                    >
+                                    <Badge tone={isPublic ? "success" : "neutral"}>
                                       {isPublic ? "public" : "private"}
                                     </Badge>
                                   </View>
@@ -221,13 +173,16 @@ export default function Home() {
                                 size={18}
                               />
                             </TouchableOpacity>
-                          );
-                        })}
-                      </View>
-                    );
-                  })()}
-                </CardContent>
-              </Card>
+                            {!isLast && (
+                              <View className="h-px bg-border mx-4" />
+                            )}
+                          </View>
+                        );
+                      })}
+                    </View>
+                  );
+                })()}
+              </View>
             </>
           )}
 
