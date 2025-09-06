@@ -3,7 +3,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { expo } from "@better-auth/expo";
 import { jwt } from "better-auth/plugins";
 import { makeDb, type EnvWithDB } from "../db";
-import { user, session, account, verification } from "../db/schema/auth";
+import { user, session, account, verification, jwks } from "../db/schema/auth";
 
 /**
  * Cloudflare Worker variables required by auth.
@@ -26,7 +26,7 @@ export function getAuth(env: AuthEnv) {
 	return betterAuth({
 		database: drizzleAdapter(makeDb(env), {
 			provider: "sqlite",
-			schema: { user, session, account, verification },
+			schema: { user, session, account, verification, jwks },
 		}),
 		// Allow deep-link redirects back into the Expo app and CORS origin for dev tools
 		trustedOrigins: [env.CORS_ORIGIN, "my-better-t-app://"],
@@ -50,7 +50,13 @@ export function getAuth(env: AuthEnv) {
 			},
 		},
 		// Expo integration and JWT issuance (set-auth-jwt header and /api/auth/token)
-		plugins: [expo(), jwt()],
+		// Disable JWKS endpoint to avoid requiring additional database tables
+		plugins: [
+			expo(),
+			jwt({
+				disableSettingJwtHeader: false, // Keep header for client-side token access
+			})
+		],
 	});
 }
 

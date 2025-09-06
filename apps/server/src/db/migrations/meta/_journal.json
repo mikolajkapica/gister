@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1757184217239,
+      "tag": "0000_optimal_lionheart",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1757185796884,
+      "tag": "0001_open_madripoor",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1757186066534,
+      "tag": "0002_charming_captain_marvel",
+      "breakpoints": true
+    }
+  ]
+}

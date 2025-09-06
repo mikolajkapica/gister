@@ -23,8 +23,8 @@
 	"d1_databases": [
 		{
 			"binding": "DB",
-			"database_name": "YOUR_DB_NAME",
-			"database_id": "YOUR_DB_ID",
+			"database_name": "gister",
+			"database_id": "d4788703-b4df-4873-b898-916ac3e68c49",
 			"preview_database_id": "local-test-db",
 			"migrations_dir": "./src/db/migrations"
 		}
