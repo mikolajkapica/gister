@@ -79,13 +79,23 @@ export default function Home() {
                       />
                       <CardTitle>Your Gists</CardTitle>
                     </View>
-                    <Button
-                      accessibilityLabel="Refresh gists"
-                      onPress={() => gists.refetch()}
-                      variant="outline"
-                    >
-                      Refresh
-                    </Button>
+                    <View className="flex-row gap-2">
+                      <Button
+                        accessibilityLabel="Create new gist"
+                        onPress={() => router.push("/gist/new")}
+                        size="sm"
+                      >
+                        <Ionicons name="add" size={16} color="#ffffff" />
+                      </Button>
+                      <Button
+                        accessibilityLabel="Refresh gists"
+                        onPress={() => gists.refetch()}
+                        variant="outline"
+                        size="sm"
+                      >
+                        Refresh
+                      </Button>
+                    </View>
                   </View>
                 </CardHeader>
                 <CardContent>
