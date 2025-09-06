@@ -4,17 +4,18 @@ import { Text, View, type ViewProps } from "react-native";
 export type CardProps = ViewProps & {
   className?: string;
   children?: ReactNode;
+  variant?: "outline" | "elevated";
 };
 
-export const Card = ({ className, children, ...props }: CardProps) => {
+export const Card = ({ className, children, variant = "outline", ...props }: CardProps) => {
   return (
     <View
       {...props}
       className={
         [
-          "border",
-          "bg-card",
-          "rounded-lg",
+          ...(variant === "elevated"
+            ? ["bg-card", "rounded-lg", "shadow-sm"]
+            : ["border", "border-border/20", "bg-card", "rounded-lg", "shadow-sm"]),
           className ?? "",
         ].join(" ").trim()
       }

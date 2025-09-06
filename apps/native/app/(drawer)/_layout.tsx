@@ -8,7 +8,8 @@ const StackLayout = () => {
 			<Stack.Screen
 				name="index"
 				options={{
-					headerTitle: () => <HomeHeader />,
+					// Render a full-width custom header so the content can justify to the edges.
+					header: () => <HomeHeader />,
 				}}
 			/>
 			<Stack.Screen

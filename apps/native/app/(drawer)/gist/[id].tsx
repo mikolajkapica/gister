@@ -7,6 +7,7 @@ import { Container } from "@/components/container";
 import { trpc, trpcClient } from "@/utils/trpc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 
 export default function GistDetail() {
 	const { id } = useLocalSearchParams<{ id: string }>();
@@ -101,9 +102,14 @@ export default function GistDetail() {
 							{data?.description || "(no description)"}
 						</Text>
 					)}
-					<Text className="mb-4 text-muted-foreground text-sm">
-						{Object.keys(data?.files || {}).length} file(s) • {data?.public ? "public" : "private"}
-					</Text>
+					<View className="mb-4 flex-row items-center gap-2">
+						<Badge tone="neutral">
+							{Object.keys(data?.files || {}).length} file(s)
+						</Badge>
+						<Badge tone={data?.public ? "success" : "neutral"}>
+							{data?.public ? "public" : "private"}
+						</Badge>
+					</View>
 					<Button
 						className={["mb-4", "self-start"].join(" ").trim()}
 						loading={updateGistMutation.isPending}
