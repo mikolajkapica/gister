@@ -18,12 +18,6 @@ const StackLayout = () => {
 				}}
 			/>
 			<Stack.Screen
-				name="todos"
-				options={{
-					headerTitle: "Todos",
-				}}
-			/>
-			<Stack.Screen
 				name="gist/[id]"
 				options={{
 					headerTitle: "Gist",

@@ -1,8 +1,9 @@
 import { authClient } from "@/lib/auth-client";
 import { useQuery } from "@tanstack/react-query";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, View } from "react-native";
 
 import { queryClient, trpc } from "@/utils/trpc";
+import { Button } from "@/components/ui/button";
 
 export function HomeHeader() {
 	const { data: session } = authClient.useSession();
@@ -12,18 +13,26 @@ export function HomeHeader() {
 		<View className="flex-row items-center justify-between px-4 py-2">
 			{session?.user && (
 				<View className="flex-row items-center gap-2">
-					<Text className="text-foreground font-medium">
+					<Text
+						className={[
+							"font-medium",
+							"text-foreground",
+						].join(" ").trim()}
+					>
 						{session.user.name}
 					</Text>
-					<TouchableOpacity
-						className="bg-destructive px-3 py-1 rounded-md"
+					<Button
+						variant="primary"
+						className="rounded-md border-destructive bg-destructive px-3 py-1"
+						accessibilityLabel="Sign out"
 						onPress={() => {
 							authClient.signOut();
 							queryClient.invalidateQueries();
 						}}
+						textClassName="font-medium text-primary-foreground text-sm"
 					>
-						<Text className="text-white text-sm font-medium">Sign Out</Text>
-					</TouchableOpacity>
+						Sign Out
+					</Button>
 				</View>
 			)}
 			<View className="flex-row items-center gap-2">
@@ -33,7 +42,15 @@ export function HomeHeader() {
 					}`}
 				/>
 				<Text className="text-muted-foreground text-sm">
-					{healthCheck.isLoading ? "Checking..." : healthCheck.data ? "API" : "API"}
+					{(() => {
+						if (healthCheck.isLoading) {
+							return "Checking...";
+						}
+						if (healthCheck.data) {
+							return "API OK";
+						}
+						return "API DOWN";
+					})()}
 				</Text>
 			</View>
 		</View>
