@@ -111,7 +111,6 @@ export default function CreateGist() {
             />
 
             <View className="mb-4 flex-row items-center gap-2">
-              <Text className="font-medium text-foreground">Visibility:</Text>
               <TouchableOpacity
                 className="flex-row items-center gap-2"
                 onPress={() => setIsPublic(!isPublic)}
