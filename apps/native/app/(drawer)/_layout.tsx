@@ -1,49 +1,36 @@
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { Link } from "expo-router";
-import { Drawer } from "expo-router/drawer";
+import { Stack } from "expo-router";
 
-import { HeaderButton } from "@/components/header-button";
+import { HomeHeader } from "@/components/home-header";
 
-const DrawerLayout = () => {
+const StackLayout = () => {
 	return (
-		<Drawer>
-			<Drawer.Screen
+		<Stack>
+			<Stack.Screen
 				name="index"
 				options={{
-					headerTitle: "Home",
-					drawerLabel: "Home",
-					drawerIcon: ({ size, color }) => (
-						<Ionicons name="home-outline" size={size} color={color} />
-					),
+					headerTitle: () => <HomeHeader />,
 				}}
 			/>
-			<Drawer.Screen
+			<Stack.Screen
 				name="(tabs)"
 				options={{
 					headerTitle: "Tabs",
-					drawerLabel: "Tabs",
-					drawerIcon: ({ size, color }) => (
-						<MaterialIcons name="border-bottom" size={size} color={color} />
-					),
-					headerRight: () => (
-						<Link href="/modal" asChild>
-							<HeaderButton />
-						</Link>
-					),
 				}}
 			/>
-			<Drawer.Screen
+			<Stack.Screen
 				name="todos"
 				options={{
 					headerTitle: "Todos",
-					drawerLabel: "Todos",
-					drawerIcon: ({ size, color }) => (
-						<Ionicons name="checkbox-outline" size={size} color={color} />
-					),
 				}}
 			/>
-		</Drawer>
+			<Stack.Screen
+				name="gist/[id]"
+				options={{
+					headerTitle: "Gist",
+				}}
+			/>
+		</Stack>
 	);
 };
 
-export default DrawerLayout;
+export default StackLayout;

@@ -15,6 +15,8 @@ import React, { useRef } from "react";
 import { useColorScheme } from "@/lib/use-color-scheme";
 import { Platform } from "react-native";
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
+import { authClient } from "@/lib/auth-client";
+import { LoadingScreen } from "@/components/loading-screen";
 
 const LIGHT_THEME: Theme = {
 	...DefaultTheme,
@@ -33,6 +35,7 @@ export default function RootLayout() {
 	const hasMounted = useRef(false);
 	const { colorScheme, isDarkColorScheme } = useColorScheme();
 	const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
+	const { isPending } = authClient.useSession();
 
 	useIsomorphicLayoutEffect(() => {
 		if (hasMounted.current) {
@@ -47,9 +50,10 @@ export default function RootLayout() {
 		hasMounted.current = true;
 	}, []);
 
-	if (!isColorSchemeLoaded) {
-		return null;
+	if (!isColorSchemeLoaded || isPending) {
+		return <LoadingScreen />;
 	}
+
 	return (
 		<QueryClientProvider client={queryClient}>
 			<ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
@@ -57,6 +61,14 @@ export default function RootLayout() {
 				<GestureHandlerRootView style={{ flex: 1 }}>
 					<Stack>
 						<Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+						<Stack.Screen
+							name="gist/[id]"
+							options={{
+								title: "Gist",
+								headerBackTitle: "Back",
+								presentation: "card"
+							}}
+						/>
 						<Stack.Screen
 							name="modal"
 							options={{ title: "Modal", presentation: "modal" }}
