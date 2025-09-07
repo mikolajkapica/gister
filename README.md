@@ -1,5 +1,15 @@
 # gister
 
+## Screenshots
+
+| Screenshot 1 | Screenshot 2 |
+|--------------|--------------|
+| ![gister1](.readme/gister1.png) | ![gister2](.readme/gister2.png) |
+
+| Screenshot 3 | Screenshot 4 |
+|--------------|--------------|
+| ![gister3](.readme/gister3.png) | ![gister4](.readme/gister4.png) |
+
 This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines Hono, TRPC, and more.
 
 ## Features
