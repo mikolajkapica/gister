@@ -100,7 +100,7 @@ export default function GistDetail() {
           <View className="mb-8">
             {isEditing ? (
               <View className="mb-4">
-                <Text className="text-sm font-medium text-muted-foreground mb-2 uppercase tracking-wide">
+                <Text className="mb-2 font-medium text-muted-foreground text-sm uppercase tracking-wide">
                   Description
                 </Text>
                 <Input
@@ -111,32 +111,40 @@ export default function GistDetail() {
                 />
               </View>
             ) : (
-              <Text className="text-2xl font-bold text-foreground mb-4 leading-tight">
+              <Text className="mb-4 font-bold text-2xl text-foreground leading-tight">
                 {data?.description || "Untitled Gist"}
               </Text>
             )}
 
             {/* Metadata Badges */}
-            <View className="flex-row items-center gap-3 mb-6">
-              <View className="flex-row items-center gap-2 bg-muted/50 px-3 py-1.5 rounded-full">
-                <Text className="text-sm font-medium text-muted-foreground">
+            <View className="mb-6 flex-row items-center gap-3">
+              <View className="flex-row items-center gap-2 rounded-full bg-muted/50 px-3 py-1.5">
+                <Text className="font-medium text-muted-foreground text-sm">
                   {Object.keys(data?.files || {}).length}
                 </Text>
-                <Text className="text-sm text-muted-foreground">
-                  {Object.keys(data?.files || {}).length === 1 ? "file" : "files"}
+                <Text className="text-muted-foreground text-sm">
+                  {Object.keys(data?.files || {}).length === 1
+                    ? "file"
+                    : "files"}
                 </Text>
               </View>
-              <View className={`flex-row items-center gap-2 px-3 py-1.5 rounded-full ${
-                data?.public
-                  ? "bg-green-50 border border-green-200"
-                  : "bg-gray-50 border border-gray-200"
-              }`}>
-                <View className={`w-2 h-2 rounded-full ${
-                  data?.public ? "bg-green-500" : "bg-gray-500"
-                }`} />
-                <Text className={`text-sm font-medium ${
-                  data?.public ? "text-green-700" : "text-gray-700"
-                }`}>
+              <View
+                className={`flex-row items-center gap-2 rounded-full px-3 py-1.5 ${
+                  data?.public
+                    ? "border border-green-200 bg-green-50"
+                    : "border border-gray-200 bg-gray-50"
+                }`}
+              >
+                <View
+                  className={`h-2 w-2 rounded-full ${
+                    data?.public ? "bg-green-500" : "bg-gray-500"
+                  }`}
+                />
+                <Text
+                  className={`font-medium text-sm ${
+                    data?.public ? "text-green-700" : "text-gray-700"
+                  }`}
+                >
                   {data?.public ? "Public" : "Private"}
                 </Text>
               </View>
@@ -169,7 +177,7 @@ export default function GistDetail() {
             </Button>
             <Button
               accessibilityLabel="Delete gist"
-              className="flex-1 bg-destructive border-0 hover:bg-destructive/90"
+              className="flex-1 border-0 bg-destructive hover:bg-destructive/90"
               loading={deleteGistMutation.isPending}
               onPress={() => {
                 alert(
@@ -195,24 +203,24 @@ export default function GistDetail() {
           </View>
           {/* Files Section */}
           <View className="space-y-6">
-            <Text className="text-lg font-semibold text-foreground mb-4">
+            <Text className="mb-4 font-semibold text-foreground text-lg">
               Files
             </Text>
 
             {Object.entries(data?.files || {}).map(([filename, file]) => (
               <View
-                className="bg-card border border-border rounded-xl overflow-hidden shadow-sm"
+                className="overflow-hidden rounded-xl border border-border bg-card shadow-sm"
                 key={filename}
               >
                 {/* File Header */}
-                <View className="flex-row items-center justify-between px-4 py-3 bg-muted/30 border-b border-border/50">
+                <View className="flex-row items-center justify-between border-border/50 border-b bg-muted/30 px-4 py-3">
                   <View className="flex-row items-center gap-2">
-                    <View className="w-2 h-2 rounded-full bg-blue-500" />
+                    <View className="h-2 w-2 rounded-full bg-blue-500" />
                     <Text className="font-medium text-foreground text-sm">
                       {filename}
                     </Text>
                   </View>
-                  <Text className="text-xs text-muted-foreground">
+                  <Text className="text-muted-foreground text-xs">
                     {file.language || "text"}
                   </Text>
                 </View>
@@ -221,10 +229,13 @@ export default function GistDetail() {
                 {isEditing ? (
                   <View className="p-4">
                     <TextInput
-                      className="bg-background border border-border rounded-lg p-4 font-mono text-sm text-foreground min-h-[200px]"
+                      className="min-h-[200px] rounded-lg border border-border bg-background p-4 font-mono text-foreground text-sm"
                       multiline
                       onChangeText={(text) =>
-                        setEditedFiles((prev) => ({ ...prev, [filename]: text }))
+                        setEditedFiles((prev) => ({
+                          ...prev,
+                          [filename]: text,
+                        }))
                       }
                       placeholder="Enter your code here..."
                       textAlignVertical="top"
@@ -232,9 +243,12 @@ export default function GistDetail() {
                     />
                   </View>
                 ) : (
-                  <View className="p-4 bg-slate-50 dark:bg-slate-900/50">
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                      <Text className="font-mono text-sm text-foreground whitespace-pre-wrap min-w-full">
+                  <View className="bg-slate-50 p-4 dark:bg-slate-900/50">
+                    <ScrollView
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                    >
+                      <Text className="min-w-full whitespace-pre-wrap font-mono text-foreground text-sm">
                         {file.content || "// Empty file"}
                       </Text>
                     </ScrollView>

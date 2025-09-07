@@ -5,13 +5,11 @@ import { useMemo, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 import { Container } from "@/components/container";
-import { SignIn } from "@/components/sign-in";
-import { SignUp } from "@/components/sign-up";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "@/components/ui/search-bar";
 import { authClient } from "@/lib/auth-client";
-import { trpc } from "@/utils/trpc";
+import { queryClient, trpc } from "@/utils/trpc";
 
 export default function Home() {
   const router = useRouter();
@@ -187,10 +185,65 @@ export default function Home() {
           )}
 
           {!session?.user && (
-            <>
-              <SignIn />
-              <SignUp />
-            </>
+            <View className="flex-1 justify-center items-center px-6 py-12">
+              {/* App Logo/Icon */}
+              <View className="mb-8 items-center">
+                <View className="w-20 h-20 bg-primary/10 rounded-3xl items-center justify-center mb-4">
+                  <Ionicons name="code-slash" size={32} color="#4C6EF5" />
+                </View>
+                <Text className="text-3xl font-bold text-foreground text-center mb-2">
+                  Gister
+                </Text>
+                <Text className="text-muted-foreground text-center text-base">
+                  Code snippets made simple
+                </Text>
+              </View>
+
+              {/* Login Card */}
+              <View className="w-full max-w-sm bg-card border border-border rounded-3xl p-8 shadow-lg">
+                <Text className="text-xl font-semibold text-foreground text-center mb-2">
+                  Welcome to Gister
+                </Text>
+                <Text className="text-muted-foreground text-center mb-8 text-sm">
+                  Sign in with GitHub to get started
+                </Text>
+
+                {/* GitHub Login Button */}
+                <TouchableOpacity
+                  onPress={async () => {
+                    try {
+                      await authClient.signIn.social(
+                        {
+                          provider: "github",
+                          callbackURL: "/",
+                        },
+                        {
+                          onSuccess: () => {
+                            queryClient.invalidateQueries();
+                          },
+                        }
+                      );
+                    } catch (error) {
+                      // Handle login error silently for better UX
+                    }
+                  }}
+                  className="bg-gray-900 hover:bg-gray-800 active:bg-gray-700 p-4 rounded-2xl flex-row items-center justify-center gap-3 mb-6"
+                >
+                  <Ionicons name="logo-github" size={20} color="#ffffff" />
+                  <Text className="text-white font-semibold text-base">
+                    Continue with GitHub
+                  </Text>
+                </TouchableOpacity>
+
+                {/* Footer */}
+                <Text className="text-muted-foreground text-center text-xs">
+                  By signing in, you agree to our terms of service
+                </Text>
+              </View>
+
+              {/* Bottom spacing */}
+              <View className="flex-1" />
+            </View>
           )}
           {/* Footer: API status */}
           <View className="my-6 items-center">
