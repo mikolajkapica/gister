@@ -1,11 +1,9 @@
 {
   "expo": {
-    "name": "my-better-t-app",
-    "slug": "my-better-t-app",
+    "name": "Gister",
+    "slug": "Gister",
     "version": "1.0.0",
-    "scheme": [
-      "my-better-t-app"
-    ],
+    "scheme": ["gister"],
     "web": {
       "bundler": "metro",
       "output": "static",
@@ -30,9 +28,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.amanvarshney01.mybettertapp"

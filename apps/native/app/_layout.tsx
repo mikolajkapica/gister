@@ -58,7 +58,7 @@ export default function RootLayout() {
     const handleDeepLink = (event: { url: string }) => {
       const url = event.url;
       // If this is a deep link from authentication, refresh the session
-      if (url.includes("my-better-t-app://")) {
+      if (url.includes("gister://")) {
         refetch();
       }
     };
@@ -67,7 +67,7 @@ export default function RootLayout() {
 
     // Also check initial URL
     Linking.getInitialURL().then((url: string | null) => {
-      if (url?.includes("my-better-t-app://")) {
+      if (url?.includes("gister://")) {
         refetch();
       }
     });

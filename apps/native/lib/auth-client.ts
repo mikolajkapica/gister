@@ -5,11 +5,11 @@ import * as SecureStore from "expo-secure-store";
 
 export const authClient = createAuthClient({
   baseURL: process.env.EXPO_PUBLIC_SERVER_URL,
-  scheme: "my-better-t-app",
+  scheme: "gister",
   plugins: [
     expoClient({
-      scheme: "my-better-t-app",
-      storagePrefix: "my-better-t-app",
+      scheme: "gister",
+      storagePrefix: "gister",
       storage: SecureStore,
     }),
   ],
