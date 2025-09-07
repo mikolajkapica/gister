@@ -8,17 +8,18 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 import "../global.css";
 import * as Linking from "expo-linking";
 import React, { useEffect, useRef } from "react";
 import { Platform } from "react-native";
+import { DevTools } from "@/components/dev-tools";
 import { LoadingScreen } from "@/components/loading-screen";
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
 import { authClient } from "@/lib/auth-client";
 import { NAV_THEME } from "@/lib/constants";
 import { useColorScheme } from "@/lib/use-color-scheme";
 import { queryClient } from "@/utils/trpc";
-import { DevTools } from "@/components/dev-tools";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -84,27 +85,27 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
         <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-        <GestureHandlerRootView
-          className={isDarkColorScheme ? "dark" : ""}
-          style={{ flex: 1 }}
-        >
-          <Stack>
-            <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="gist/[id]"
-              options={{
-                title: "Gist",
-                headerBackTitle: "Back",
-                presentation: "card",
-              }}
-            />
-            <Stack.Screen
-              name="modal"
-              options={{ title: "Modal", presentation: "modal" }}
-            />
-          </Stack>
-          <DevTools />
-        </GestureHandlerRootView>
+          <GestureHandlerRootView
+            className={isDarkColorScheme ? "dark" : ""}
+            style={{ flex: 1 }}
+          >
+            <Stack>
+              <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="gist/[id]"
+                options={{
+                  title: "Gist",
+                  headerBackTitle: "Back",
+                  presentation: "card",
+                }}
+              />
+              <Stack.Screen
+                name="modal"
+                options={{ title: "Modal", presentation: "modal" }}
+              />
+            </Stack>
+            <DevTools />
+          </GestureHandlerRootView>
       </ThemeProvider>
     </QueryClientProvider>
   );

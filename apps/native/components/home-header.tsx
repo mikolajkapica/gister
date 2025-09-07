@@ -1,15 +1,17 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { authClient } from "@/lib/auth-client";
 
 export function HomeHeader() {
   const { data: session } = authClient.useSession();
   const [showMenu, setShowMenu] = useState(false);
+  const insets = useSafeAreaInsets();
 
   return (
-    <View className="border-border/50 border-b bg-background">
+    <View className="border-border/50 border-b bg-background" style={{ paddingTop: insets.top }}>
       <View className="flex-row items-center justify-between px-6 py-4">
         {/* Left: App name */}
         <View className="flex-row items-center gap-2">
