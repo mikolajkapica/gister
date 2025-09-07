@@ -85,27 +85,27 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
         <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-          <GestureHandlerRootView
-            className={isDarkColorScheme ? "dark" : ""}
-            style={{ flex: 1 }}
-          >
-            <Stack>
-              <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-              <Stack.Screen
-                name="gist/[id]"
-                options={{
-                  title: "Gist",
-                  headerBackTitle: "Back",
-                  presentation: "card",
-                }}
-              />
-              <Stack.Screen
-                name="modal"
-                options={{ title: "Modal", presentation: "modal" }}
-              />
-            </Stack>
-            <DevTools />
-          </GestureHandlerRootView>
+        <GestureHandlerRootView
+          className={isDarkColorScheme ? "dark" : ""}
+          style={{ flex: 1 }}
+        >
+          <Stack>
+            <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="gist/[id]"
+              options={{
+                title: "Gist",
+                headerBackTitle: "Back",
+                presentation: "card",
+              }}
+            />
+            <Stack.Screen
+              name="modal"
+              options={{ title: "Modal", presentation: "modal" }}
+            />
+          </Stack>
+          <DevTools />
+        </GestureHandlerRootView>
       </ThemeProvider>
     </QueryClientProvider>
   );

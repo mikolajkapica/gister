@@ -10,7 +10,10 @@ export function HomeHeader() {
   const insets = useSafeAreaInsets();
 
   return (
-    <View className="border-border/50 border-b bg-background" style={{ paddingTop: insets.top }}>
+    <View
+      className="border-border/50 border-b bg-background"
+      style={{ paddingTop: insets.top }}
+    >
       <View className="flex-row items-center justify-between px-6 py-4">
         {/* Left: App name */}
         <View className="flex-row items-center gap-2">
@@ -55,14 +58,16 @@ export function HomeHeader() {
                   <View className="mx-2 h-px bg-border" />
 
                   <Pressable
-                    className="flex-row items-center gap-3 px-4 py-3 hover:bg-muted/50 active:bg-muted/70"
+                    className="flex-row items-center gap-3 bg-destructive px-4 py-3 hover:bg-destructive/90 active:bg-destructive/80"
                     onPress={() => {
                       setShowMenu(false);
                       authClient.signOut();
                     }}
                   >
-                    <Ionicons color="#ef4444" name="log-out" size={18} />
-                    <Text className="text-destructive text-sm">Sign Out</Text>
+                    <Ionicons color="#ffffff" name="log-out" size={18} />
+                    <Text className="text-destructive-foreground text-sm">
+                      Sign Out
+                    </Text>
                   </Pressable>
                 </View>
               )}

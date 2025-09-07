@@ -50,12 +50,12 @@ export const trpcClient = createTRPCClient<AppRouter>({
         const headers = new Map<string, string>();
         // Prefer JWT for auth between app and backend
         const jwt = await getJwt();
-        console.log('Client: JWT token retrieved:', jwt ? 'present' : 'null');
+        console.log("Client: JWT token retrieved:", jwt ? "present" : "null");
         if (jwt) {
           headers.set("Authorization", `Bearer ${jwt}`);
-          console.log('Client: Setting Authorization header');
+          console.log("Client: Setting Authorization header");
         } else {
-          console.log('Client: No JWT token, no Authorization header set');
+          console.log("Client: No JWT token, no Authorization header set");
         }
 
         // Cookies not needed for web, JWT is sufficient

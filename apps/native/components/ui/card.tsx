@@ -7,55 +7,46 @@ export type CardProps = ViewProps & {
   variant?: "outline" | "elevated";
 };
 
-export const Card = ({ className, children, variant = "outline", ...props }: CardProps) => {
-  return (
-    <View
-      {...props}
-      className={
-        [
-          ...(variant === "elevated"
-            ? ["bg-card", "rounded-lg", "shadow-sm"]
-            : ["border", "border-border/20", "bg-card", "rounded-lg", "shadow-sm"]),
-          className ?? "",
-        ].join(" ").trim()
-      }
-    >
-      {children}
-    </View>
-  );
-};
-
-export const CardHeader = ({
+export const Card = ({
   className,
   children,
+  variant = "outline",
   ...props
 }: CardProps) => {
   return (
     <View
       {...props}
       className={[
-        "p-4",
+        ...(variant === "elevated"
+          ? ["bg-card", "rounded-lg", "shadow-sm"]
+          : [
+              "border",
+              "border-border/20",
+              "bg-card",
+              "rounded-lg",
+              "shadow-sm",
+            ]),
         className ?? "",
-      ].join(" ").trim()}
+      ]
+        .join(" ")
+        .trim()}
     >
       {children}
     </View>
   );
 };
 
-export const CardContent = ({
-  className,
-  children,
-  ...props
-}: CardProps) => {
+export const CardHeader = ({ className, children, ...props }: CardProps) => {
   return (
-    <View
-      {...props}
-      className={[
-        "p-4",
-        className ?? "",
-      ].join(" ").trim()}
-    >
+    <View {...props} className={["p-4", className ?? ""].join(" ").trim()}>
+      {children}
+    </View>
+  );
+};
+
+export const CardContent = ({ className, children, ...props }: CardProps) => {
+  return (
+    <View {...props} className={["p-4", className ?? ""].join(" ").trim()}>
       {children}
     </View>
   );
@@ -70,13 +61,9 @@ export const CardTitle = ({
 }) => {
   return (
     <Text
-      className={
-        [
-          "font-medium",
-          "text-foreground",
-          className ?? "",
-        ].join(" ").trim()
-      }
+      className={["font-medium", "text-foreground", className ?? ""]
+        .join(" ")
+        .trim()}
     >
       {children}
     </Text>
@@ -92,13 +79,9 @@ export const CardDescription = ({
 }) => {
   return (
     <Text
-      className={
-        [
-          "text-muted-foreground",
-          "text-sm",
-          className ?? "",
-        ].join(" ").trim()
-      }
+      className={["text-muted-foreground", "text-sm", className ?? ""]
+        .join(" ")
+        .trim()}
     >
       {children}
     </Text>
