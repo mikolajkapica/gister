@@ -4,12 +4,16 @@ import { expoClient } from "@better-auth/expo/client";
 import * as SecureStore from "expo-secure-store";
 
 export const authClient = createAuthClient({
-	baseURL: process.env.EXPO_PUBLIC_SERVER_URL,
-	plugins: [
-		expoClient({
-			scheme: "my-better-t-app",
-			storagePrefix: "my-better-t-app",
-			storage: SecureStore,
-		}),
-	],
+  baseURL: process.env.EXPO_PUBLIC_SERVER_URL,
+  plugins: [
+    expoClient({
+      scheme: "my-better-t-app",
+      storagePrefix: "my-better-t-app",
+      storage: SecureStore,
+    }),
+  ],
+  fetchOptions: {
+    // Ensure Better Auth uses the same React Query instance
+    // This helps with devtools integration
+  },
 });

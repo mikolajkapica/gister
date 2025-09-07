@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { authClient } from "@/lib/auth-client";
-import { queryClient } from "@/utils/trpc";
 
 export function HomeHeader() {
   const { data: session } = authClient.useSession();
@@ -60,7 +59,6 @@ export function HomeHeader() {
                     onPress={() => {
                       setShowMenu(false);
                       authClient.signOut();
-                      queryClient.invalidateQueries();
                     }}
                   >
                     <Ionicons color="#ef4444" name="log-out" size={18} />

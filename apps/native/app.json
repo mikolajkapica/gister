@@ -3,7 +3,7 @@
 		"name": "my-better-t-app",
 		"slug": "my-better-t-app",
 		"version": "1.0.0",
-		"scheme": "my-better-t-app",
+		"scheme": ["my-better-t-app"],
 		"web": {
 			"bundler": "metro",
 			"output": "static",
