@@ -4,7 +4,7 @@
 	"compatibility_date": "2025-06-15",
 	"compatibility_flags": ["nodejs_compat"],
 	"vars": {
-		"NODE_ENV": "production"
+		"NODE_ENV": "production",
 		// Add public environment variables here
 		// Example: "CORS_ORIGIN": "https://your-domain.com"
 	},
@@ -25,7 +25,7 @@
 			"binding": "DB",
 			"database_name": "gister",
 			"database_id": "d4788703-b4df-4873-b898-916ac3e68c49",
-			"preview_database_id": "local-test-db",
+			"preview_database_id": "d4788703-b4df-4873-b898-916ac3e68c49",
 			"migrations_dir": "./src/db/migrations"
 		}
 	]

@@ -1,12 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, Text, TextInput, View } from "react-native";
-
+import {
+  ScrollView,
+  Text,
+  TextInput,
+  useColorScheme,
+  View,
+} from "react-native";
 import { Container } from "@/components/container";
 import alert from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { trpc, trpcClient } from "@/utils/trpc";
 
 export default function GistDetail() {
@@ -103,10 +107,13 @@ export default function GistDetail() {
                 <Text className="mb-2 font-medium text-muted-foreground text-sm uppercase tracking-wide">
                   Description
                 </Text>
-                <Input
-                  inputClassName="border-0 bg-muted/50 p-4 text-xl font-semibold text-foreground rounded-xl"
+                <TextInput
+                  className="rounded-xl border-0 bg-muted/50 p-4 font-semibold text-foreground text-xl"
+                  multiline
                   onChangeText={setEditedDescription}
                   placeholder="Add a description..."
+                  placeholderTextColor="hsl(215, 16%, 57%)"
+                  textAlignVertical="top"
                   value={editedDescription}
                 />
               </View>

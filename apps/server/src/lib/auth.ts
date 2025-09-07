@@ -29,11 +29,7 @@ export function getAuth(env: AuthEnv) {
       schema: { user, session, account, verification, jwks },
     }),
     // Allow deep-link redirects back into the Expo app and CORS origin for dev tools
-    trustedOrigins: [
-      env.CORS_ORIGIN,
-      "my-better-t-app://",
-      "exp://1ry3rpk-anonymous-8081.exp.direct",
-    ],
+    trustedOrigins: ["https://1ry3rpk-mikolajkapica-8081.exp.direct"],
     socialProviders: {
       github: {
         clientId: env.GITHUB_CLIENT_ID,
