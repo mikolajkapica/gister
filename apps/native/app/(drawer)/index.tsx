@@ -2,7 +2,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Platform,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import { Container } from "@/components/container";
 import { Badge } from "@/components/ui/badge";
@@ -211,11 +217,14 @@ export default function Home() {
                 <TouchableOpacity
                   className="mb-6 flex-row items-center justify-center gap-3 rounded-2xl bg-gray-900 p-4 hover:bg-gray-800 active:bg-gray-700"
                   onPress={async () => {
-                    await authClient.signIn.social({
-                      provider: "github",
-                      callbackURL: "my-better-t-app://",
-                    });
-                    router.replace("/(drawer)");
+                    try {
+                      await authClient.signIn.social({
+                        provider: "github",
+                        callbackURL: "/",
+                      });
+                    } catch (error) {
+                      console.error("Error during sign-in:", error);
+                    }
                   }}
                 >
                   <Ionicons color="#ffffff" name="logo-github" size={20} />
