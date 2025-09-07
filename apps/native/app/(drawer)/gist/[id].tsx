@@ -177,7 +177,7 @@ export default function GistDetail() {
             </Button>
             <Button
               accessibilityLabel="Delete gist"
-              className="flex-1 border-0 bg-destructive hover:bg-destructive/90"
+              className="flex-1 hover:bg-destructive/90"
               loading={deleteGistMutation.isPending}
               onPress={() => {
                 alert(
@@ -196,7 +196,7 @@ export default function GistDetail() {
                 );
               }}
               size="sm"
-              variant="outline"
+              variant="destructive"
             >
               Delete
             </Button>

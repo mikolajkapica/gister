@@ -1,8 +1,8 @@
-import { ActivityIndicator, Pressable, Text } from "react-native";
-import type { GestureResponderEvent, PressableProps } from "react-native";
 import type { ReactNode } from "react";
+import type { GestureResponderEvent, PressableProps } from "react-native";
+import { ActivityIndicator, Pressable, Text } from "react-native";
 
-type Variant = "primary" | "outline" | "ghost";
+type Variant = "primary" | "outline" | "ghost" | "destructive";
 type Size = "sm" | "md" | "lg";
 
 export type ButtonProps = Omit<PressableProps, "onPress"> & {
@@ -21,12 +21,14 @@ const variantBaseClasses: Record<Variant, string> = {
   primary: "bg-primary border border-primary active:opacity-90",
   outline: "bg-transparent border border-border",
   ghost: "bg-transparent border border-transparent",
+  destructive: "bg-destructive border border-destructive active:opacity-90",
 };
 
 const textVariantClasses: Record<Variant, string> = {
   primary: "text-primary-foreground",
   outline: "text-foreground",
   ghost: "text-foreground",
+  destructive: "text-destructive-foreground",
 };
 
 const sizeClasses: Record<Size, string> = {
@@ -57,7 +59,7 @@ export const Button = ({
 
   let content: ReactNode;
   if (loading) {
-    content = <ActivityIndicator size="small" color="#ffffff" />;
+    content = <ActivityIndicator color="#ffffff" size="small" />;
   } else if (typeof children === "string") {
     content = (
       <Text
@@ -66,7 +68,9 @@ export const Button = ({
           textSizeClasses[size],
           textVariantClasses[variant],
           textClassName ?? "",
-        ].join(" ").trim()}
+        ]
+          .join(" ")
+          .trim()}
       >
         {children}
       </Text>
@@ -78,18 +82,20 @@ export const Button = ({
   return (
     <Pressable
       {...pressableProps}
-      accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
-      disabled={isDisabled}
-      onPress={isDisabled ? undefined : onPress}
+      accessibilityRole="button"
+      android_ripple={{ color: "rgba(0,0,0,0.08)", borderless: false }}
       className={[
         "flex-row items-center justify-center",
         sizeClasses[size],
         variantBaseClasses[variant],
         isDisabled ? "opacity-60" : "",
         className ?? "",
-      ].join(" ").trim()}
-      android_ripple={{ color: "rgba(0,0,0,0.08)", borderless: false }}
+      ]
+        .join(" ")
+        .trim()}
+      disabled={isDisabled}
+      onPress={isDisabled ? undefined : onPress}
     >
       {content}
     </Pressable>
