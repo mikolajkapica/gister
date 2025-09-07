@@ -2,7 +2,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { authClient } from "@/lib/auth-client";
 
 export function HomeHeader() {
@@ -21,7 +20,6 @@ export function HomeHeader() {
 
         {/* Right: Actions */}
         <View className="flex-row items-center gap-3">
-          <ThemeToggle />
           {session?.user && (
             <View className="relative">
               <Pressable
